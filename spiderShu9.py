@@ -151,7 +151,6 @@ def save_to_docx(sourceurl, dwnpath, baseurl):
             content = doc('#J_ListBd > div > div.content').text()  # 备用（页面中的文本信息）
             downLink = doc('#J_ListBd > div > div.content > a').attr('href')
 
-            # file_name = dwnpath + '\\' + title + '.ppt'
             file_name = os.path.join(dwnpath, title + '.ppt')
             isExists = os.path.exists(file_name)
 
