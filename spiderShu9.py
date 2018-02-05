@@ -225,7 +225,8 @@ def main():
                         parse_branch(branchHtml)
                         lessions = parse_branch(branchHtml)
 
-                        print(unit['unit'] + '    包含小节数：', len(lessions))
+                        # print(unit['unit'] + '    包含小节数：', len(lessions))
+                        print(unit['unit'] + ' %d   包含小节数：' %(len(lessions)))
 
                         if len(lessions) > 0:    # 说明单元下有小节（课），对资料按小节分类
                             for lession in lessions:
