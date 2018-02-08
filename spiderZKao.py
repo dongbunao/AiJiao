@@ -153,42 +153,42 @@ def main():
 
                         time.sleep(10)
 
-                        if zsd['subItem'] == '文言文' or zsd['subItem'] == '标点符号' or zsd['subItem'] == '病句' or zsd['subItem'] == '仿句联句' or zsd['subItem'] == '文学常识' or zsd['subItem'] == '现代文阅读' or zsd['subItem'] == '修词手法' or zsd['subItem'] == '字音字形':
-                            print(zsd['subItem'] + '  已经抓取过了·····················')
-                        else:
-                            path2 = os.path.join(path1, zsd['subItem'])
-                            isExists = os.path.exists(path2)
-                            if not isExists:
-                                os.makedirs(path2)
+                        # if zsd['subItem'] == '文言文' or zsd['subItem'] == '标点符号' or zsd['subItem'] == '病句' or zsd['subItem'] == '仿句联句' or zsd['subItem'] == '文学常识' or zsd['subItem'] == '现代文阅读' or zsd['subItem'] == '修词手法' or zsd['subItem'] == '字音字形':
+                        #     print(zsd['subItem'] + '  已经抓取过了·····················')
+                        # else:
+                        path2 = os.path.join(path1, zsd['subItem'])
+                        isExists = os.path.exists(path2)
+                        if not isExists:
+                            os.makedirs(path2)
 
-                            zsdUrl = zsd['link']
-                            # 第一页的内容
-                            zsdListHtml = get_zsdList(zsdUrl)
-                            totalPage = parse_zsdList_totalPage(zsdListHtml)    # totalPage知识点列表的总的页数
-                            items = parse_zsdList(zsdListHtml)
-                            if items:
-                                for item in items:
-                                    print(item)
-                                    zsdDetailHtml = get_zsdDetail(item['link'])
-                                    parse_zsdDetail(zsdDetailHtml, path2, item['title'])
+                        zsdUrl = zsd['link']
+                        # 第一页的内容
+                        zsdListHtml = get_zsdList(zsdUrl)
+                        totalPage = parse_zsdList_totalPage(zsdListHtml)    # totalPage知识点列表的总的页数
+                        items = parse_zsdList(zsdListHtml)
+                        if items:
+                            for item in items:
+                                print(item)
+                                zsdDetailHtml = get_zsdDetail(item['link'])
+                                parse_zsdDetail(zsdDetailHtml, path2, item['title'])
 
-                            # 如果内容有多页（大于1页）
-                            if totalPage > 1:
-                                count = 0
-                                nextPageUrl = 'http://www.zhongkao.com/zsdk/ywzsd/wyw/index_{number}.shtml'
-                                for x in range(2, totalPage+1):
-                                    print('第 ' + str(x) + ' 页。。。。。。。。。')
-                                    nextPageHtml = get_zsdList(nextPageUrl.format(number=x))
-                                    items = parse_zsdList(nextPageHtml)
-                                    if items:
-                                        for item in items:
-                                            if count % 50 == 0:
-                                                print(str(count) + '有点累了，休息五秒···')
-                                                time.sleep(5)
-                                            print(item)
-                                            zsdDetailHtml = get_zsdDetail(item['link'])
-                                            parse_zsdDetail(zsdDetailHtml, path2, item['title'])
-                                            count = count + 1
+                        # 如果内容有多页（大于1页）
+                        if totalPage > 1:
+                            count = 0
+                            nextPageUrl = 'http://www.zhongkao.com/zsdk/ywzsd/wyw/index_{number}.shtml'
+                            for x in range(2, totalPage+1):
+                                print('第 ' + str(x) + ' 页。。。。。。。。。')
+                                nextPageHtml = get_zsdList(nextPageUrl.format(number=x))
+                                items = parse_zsdList(nextPageHtml)
+                                if items:
+                                    for item in items:
+                                        if count % 50 == 0:
+                                            print(str(count) + '有点累了，休息五秒···')
+                                            time.sleep(5)
+                                        print(item)
+                                        zsdDetailHtml = get_zsdDetail(item['link'])
+                                        parse_zsdDetail(zsdDetailHtml, path2, item['title'])
+                                        count = count + 1
 
 
 
