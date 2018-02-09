@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import time
-
+import re
 import requests
 from pyquery import PyQuery as pq
 import os
@@ -138,6 +138,10 @@ def main():
                 print(subject)
 
                 time.sleep(10)
+                print(subject['link'])
+                pattern = re.compile(r'http://www.zhongkao.com/zsdk/(.*?)/')
+                subCode = re.findall(pattern, subject['link'])[0]
+                print(subCode)
 
                 path1 = os.path.join('e:\\中考网2\\', subject['subName'])
                 isExists = os.path.exists(path1)
@@ -152,6 +156,11 @@ def main():
                         print(zsd)
 
                         time.sleep(10)
+
+                        print(zsd['link'])
+                        pattern = re.compile(r'http://www.zhongkao.com/zsdk/.*?/(.*?)/')
+                        itemCode = re.findall(pattern, zsd['link'])[0]
+                        print(itemCode)
 
                         # if zsd['subItem'] == '文言文' or zsd['subItem'] == '标点符号' or zsd['subItem'] == '病句' or zsd['subItem'] == '仿句联句' or zsd['subItem'] == '文学常识' or zsd['subItem'] == '现代文阅读' or zsd['subItem'] == '修词手法' or zsd['subItem'] == '字音字形':
                         #     print(zsd['subItem'] + '  已经抓取过了·····················')
@@ -175,10 +184,13 @@ def main():
                         # 如果内容有多页（大于1页）
                         if totalPage > 1:
                             count = 0
-                            nextPageUrl = 'http://www.zhongkao.com/zsdk/ywzsd/wyw/index_{number}.shtml'
+
+                            nextPageUrl = 'http://www.zhongkao.com/zsdk/{subCode}/{itemCode}/index_{number}.shtml'
+
                             for x in range(2, totalPage+1):
                                 print('第 ' + str(x) + ' 页。。。。。。。。。')
-                                nextPageHtml = get_zsdList(nextPageUrl.format(number=x))
+                                nextPageHtml = get_zsdList(nextPageUrl.format(subCode=subCode, itemCode=itemCode, number=x))
+                                print(nextPageUrl.format(subCode=subCode, itemCode=itemCode, number=x))
                                 items = parse_zsdList(nextPageHtml)
                                 if items:
                                     for item in items:
